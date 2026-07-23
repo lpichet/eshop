@@ -1,0 +1,24 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.4.6">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>a587be9f-934a-4606-ac41-47b91e8c37d8</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.4.6" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="13.4.6" />
+    <!-- Cross-team contracts: hosting integrations published by the catalog and basket teams
+         to GitHub Packages. They pull the teams' container images from GHCR. -->
+    <PackageReference Include="EShop.Catalog.Hosting" Version="1.0.*" />
+    <PackageReference Include="EShop.Basket.Hosting" Version="1.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EShop.WebApp\EShop.WebApp.csproj" />
+  </ItemGroup>
+
+</Project>

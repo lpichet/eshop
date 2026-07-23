@@ -1,0 +1,5 @@
+[
+  { "name": "E2E Carbon Unicycle", "description": "Exists only in end-to-end test runs.", "price": 999.99, "brand": "E2E Labs", "type": "Gadgets", "availableStock": 1 },
+  { "name": "E2E Quantum Tent", "description": "Sleeps two in superposition.", "price": 499.00, "brand": "E2E Labs", "type": "Camping", "availableStock": 2 },
+  { "name": "E2E Glow Lantern", "description": "Illuminates flaky tests.", "price": 19.99, "brand": "E2E Labs", "type": "Gadgets", "availableStock": 3 }
+]

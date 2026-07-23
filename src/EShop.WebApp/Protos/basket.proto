@@ -1,0 +1,41 @@
+// Contract owned by the basket team. Consumers (e.g. the eShop web app) copy this
+// file and generate a client with GrpcServices="Client".
+syntax = "proto3";
+
+option csharp_namespace = "BasketApi.Grpc";
+
+package BasketApi;
+
+service Basket {
+  rpc GetBasket(GetBasketRequest) returns (CustomerBasketResponse) {}
+  rpc UpdateBasket(UpdateBasketRequest) returns (CustomerBasketResponse) {}
+  rpc DeleteBasket(DeleteBasketRequest) returns (DeleteBasketResponse) {}
+}
+
+message GetBasketRequest {
+  string buyer_id = 1;
+}
+
+message BasketItem {
+  int32 product_id = 1;
+  string product_name = 2;
+  double unit_price = 3;
+  int32 quantity = 4;
+}
+
+message CustomerBasketResponse {
+  string buyer_id = 1;
+  repeated BasketItem items = 2;
+}
+
+message UpdateBasketRequest {
+  string buyer_id = 1;
+  repeated BasketItem items = 2;
+}
+
+message DeleteBasketRequest {
+  string buyer_id = 1;
+}
+
+message DeleteBasketResponse {
+}

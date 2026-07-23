@@ -1,0 +1,10 @@
+[
+  { "name": "eShop Select Espresso Kit", "description": "Compact stovetop espresso maker with two double-wall cups — the storefront's best seller.", "price": 49.00, "brand": "eShop Select", "type": "Camping", "availableStock": 80 },
+  { "name": "City Cruiser Daypack 20L", "description": "Sleek commuter daypack with padded laptop sleeve and hidden back pocket.", "price": 72.50, "brand": "Wanderline", "type": "Bags", "availableStock": 150 },
+  { "name": "Wanderer Wool Beanie", "description": "Merino wool beanie, warm and itch-free, in the storefront's signature indigo.", "price": 24.90, "brand": "Wanderline", "type": "Clothing", "availableStock": 300 },
+  { "name": "Pathfinder Headlamp Pro", "description": "450-lumen rechargeable headlamp with red night mode and tilting head.", "price": 39.99, "brand": "Northline", "type": "Gadgets", "availableStock": 190 },
+  { "name": "Summit Series Sunglasses", "description": "Polarized category-3 lenses with grippy temples for fast ridgelines.", "price": 89.00, "brand": "Northline", "type": "Eyewear", "availableStock": 95 },
+  { "name": "Riverline Dry Bag 10L", "description": "Roll-top dry bag that keeps kit bone dry through rapids and rainstorms.", "price": 27.00, "brand": "eShop Select", "type": "Bags", "availableStock": 210 },
+  { "name": "Basecamp Enamel Mug Set", "description": "Set of four camp-classic enamel mugs that survive drops and campfires alike.", "price": 32.00, "brand": "eShop Select", "type": "Camping", "availableStock": 120 },
+  { "name": "Ridgewalker Trail Socks (2-pack)", "description": "Cushioned merino-blend socks with blister-guard knit zones.", "price": 21.50, "brand": "Wanderline", "type": "Clothing", "availableStock": 260 }
+]

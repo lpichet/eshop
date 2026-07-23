@@ -1,0 +1,67 @@
+@page "/basket"
+@rendermode InteractiveServer
+@using BasketApi.Grpc
+@inject BasketState State
+
+<PageTitle>Basket · eShop Aspire demo</PageTitle>
+
+<h1>Your basket</h1>
+
+@if (basket is null)
+{
+    <p class="muted">Loading basket…</p>
+}
+else if (basket.Items.Count == 0)
+{
+    <p>Your basket is empty. <a href="/">Browse the catalog</a>.</p>
+}
+else
+{
+    <table class="basket-table">
+        <thead>
+            <tr><th>Product</th><th>Unit price</th><th>Quantity</th><th>Subtotal</th><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var item in basket.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.UnitPrice.ToString("C")</td>
+                    <td>
+                        <button class="btn btn-small" @onclick="() => ChangeQuantityAsync(item.ProductId, item.Quantity - 1)">−</button>
+                        <span class="qty">@item.Quantity</span>
+                        <button class="btn btn-small" @onclick="() => ChangeQuantityAsync(item.ProductId, item.Quantity + 1)">+</button>
+                    </td>
+                    <td>@((item.UnitPrice * item.Quantity).ToString("C"))</td>
+                    <td><button class="btn btn-small btn-ghost" @onclick="() => ChangeQuantityAsync(item.ProductId, 0)">Remove</button></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="total-label">Total</td>
+                <td class="total">@basket.Items.Sum(i => i.UnitPrice * i.Quantity).ToString("C")</td>
+                <td><button class="btn btn-ghost" @onclick="ClearAsync">Empty basket</button></td>
+            </tr>
+        </tfoot>
+    </table>
+    <p class="muted">Stored in Redis by the basket team's gRPC service — reload the page or restart the webapp and it's still here.</p>
+}
+
+@code {
+    private CustomerBasketResponse? basket;
+
+    protected override async Task OnInitializedAsync() => basket = await State.GetAsync();
+
+    private async Task ChangeQuantityAsync(int productId, int quantity)
+    {
+        await State.SetQuantityAsync(productId, quantity);
+        basket = await State.GetAsync();
+    }
+
+    private async Task ClearAsync()
+    {
+        await State.ClearAsync();
+        basket = await State.GetAsync();
+    }
+}

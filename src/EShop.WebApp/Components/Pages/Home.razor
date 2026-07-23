@@ -1,0 +1,97 @@
+@page "/"
+@rendermode InteractiveServer
+@inject CatalogClient Catalog
+@inject BasketState BasketSvc
+
+<PageTitle>Catalog · eShop Aspire demo</PageTitle>
+
+<h1>Catalog</h1>
+
+@if (catalogPage is null)
+{
+    <p class="muted">Loading catalog…</p>
+}
+else
+{
+    <div class="toolbar">
+        <span class="muted">@catalogPage.Count product(s)</span>
+        @if (brands is { Count: > 1 })
+        {
+            <select @onchange="OnBrandChanged">
+                <option value="">All brands</option>
+                @foreach (var b in brands)
+                {
+                    <option value="@b" selected="@(b == selectedBrand)">@b</option>
+                }
+            </select>
+        }
+    </div>
+
+    <div class="product-grid">
+        @foreach (var item in catalogPage.Data)
+        {
+            <article class="product-card">
+                <div class="product-icon">@IconFor(item.Type)</div>
+                <h3>@item.Name</h3>
+                <p class="product-meta"><span class="chip">@item.Brand</span> <span class="chip chip-type">@item.Type</span></p>
+                <p class="product-desc">@item.Description</p>
+                <div class="product-footer">
+                    <span class="price">@item.Price.ToString("C")</span>
+                    <button class="btn" @onclick="() => AddToBasketAsync(item)">Add to basket</button>
+                </div>
+            </article>
+        }
+    </div>
+}
+
+@if (justAdded is not null)
+{
+    <div class="toast">Added “@justAdded” to the basket ✓</div>
+}
+
+@code {
+    private CatalogPage? catalogPage;
+    private List<string>? brands;
+    private string? selectedBrand;
+    private string? justAdded;
+
+    protected override async Task OnInitializedAsync()
+    {
+        catalogPage = await Catalog.GetItemsAsync();
+        brands = await Catalog.GetBrandsAsync();
+    }
+
+    private async Task OnBrandChanged(ChangeEventArgs e)
+    {
+        selectedBrand = string.IsNullOrEmpty((string?)e.Value) ? null : (string?)e.Value;
+        catalogPage = await Catalog.GetItemsAsync(brand: selectedBrand);
+    }
+
+    private async Task AddToBasketAsync(CatalogItem item)
+    {
+        await BasketSvc.AddItemAsync(item);
+        justAdded = item.Name;
+        _ = ClearToastAsync();
+    }
+
+    private async Task ClearToastAsync()
+    {
+        await Task.Delay(2500);
+        justAdded = null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private static string IconFor(string type) => type switch
+    {
+        "Gadgets" => "⌚",
+        "Accessories" => "🎒",
+        "Eyewear" => "🥽",
+        "Climbing" => "🧗",
+        "Footwear" => "🥾",
+        "Bags" => "🎒",
+        "Camping" => "🏕️",
+        "Clothing" => "🧥",
+        "Hiking" => "🥾",
+        _ => "🛒"
+    };
+}
