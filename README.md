@@ -26,8 +26,9 @@ var basketApi = builder.AddBasketApi("basket-api", redis);
 Prereqs: .NET 10 SDK, Docker (or Podman), [Aspire CLI](https://aspire.dev), GitHub CLI (`gh auth login`).
 
 ```bash
-# GitHub Packages needs auth even for public feeds:
-export GITHUB_USERNAME=lpichet
+# GitHub Packages needs auth even for public feeds, and the token must carry the
+# read:packages scope (one-time: gh auth refresh -h github.com -s read:packages):
+export GITHUB_USERNAME=$(gh api user --jq .login)
 export GITHUB_TOKEN=$(gh auth token)
 
 aspire run --project src/EShop.AppHost
