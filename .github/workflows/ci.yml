@@ -28,6 +28,14 @@ jobs:
       - name: Log in to GitHub Container Registry (to pull team images)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Add GitHub Packages credentials (workspace copy of nuget.config)
+        run: >
+          dotnet nuget update source github-lpichet
+          --username ${{ github.actor }}
+          --password ${{ secrets.GITHUB_TOKEN }}
+          --store-password-in-clear-text
+          --configfile nuget.config
+
       - name: Restore (pulls EShop.*.Hosting from GitHub Packages)
         run: dotnet restore
 

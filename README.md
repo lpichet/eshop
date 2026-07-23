@@ -25,12 +25,19 @@ var basketApi = builder.AddBasketApi("basket-api", redis);
 
 Prereqs: .NET 10 SDK, Docker (or Podman), [Aspire CLI](https://aspire.dev), GitHub CLI (`gh auth login`).
 
-```bash
-# GitHub Packages needs auth even for public feeds, and the token must carry the
-# read:packages scope (one-time: gh auth refresh -h github.com -s read:packages):
-export GITHUB_USERNAME=$(gh api user --jq .login)
-export GITHUB_TOKEN=$(gh auth token)
+One-time setup — GitHub Packages needs auth even for public feeds, and credentials must live in your **user-level** NuGet config so IDE background restores work too:
 
+```bash
+gh auth refresh -h github.com -s read:packages
+dotnet nuget add source https://nuget.pkg.github.com/lpichet/index.json \
+  --name github-lpichet --username $(gh api user --jq .login) \
+  --password $(gh auth token) --store-password-in-clear-text \
+  --configfile ~/.nuget/NuGet/NuGet.Config
+```
+
+Then:
+
+```bash
 aspire run --project src/EShop.AppHost
 # or: dotnet run --project src/EShop.AppHost
 ```
@@ -46,7 +53,7 @@ The dashboard opens with: PostgreSQL + Redis containers, the two team images pul
 5. **End-to-end tests** — [tests/EShop.E2ETests](tests/EShop.E2ETests) boots this whole composition (team images included) and replaces the seed a third time with test-only data, proving the same extension serves dev, demo and test scenarios.
 
 ```bash
-dotnet test   # runs the e2e suite locally (same env vars as above)
+dotnet test   # runs the e2e suite locally (same one-time setup as above)
 ```
 
 ## Versioning
